@@ -1,0 +1,84 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Visual Studio
+*.ipch
+.vs/*
+x64/*
+*/x64/*
+x86/*
+*/x86/*
+*.pdb
+*.tlog
+*.db
+vs/Source/x64/*
+*.suo
+
+# CLion
+clion/.idea/*
+
+# JetBrains
+*.json
+*.xml
+*.filters
+clion/cmake-build-debug-visual-studio-x64/*
+clion/cmake-build-release-visual-studio-x64/*
+clion/cmake-build-release-mingw/*
+!clion/CMakeLists.txt
+!clion_linux/CMakeLists.txt
+
+# Models
+*.bin
+*.mtl
+vs/Source/*.png
+*.jpeg
+*.jpg
+*.zip
+*.gltf
+*.tif
+*.tiff
+*.md5anim
+*.md5mesh
+*.psd
+!vs/Source/Assets/Models/Ajax.obj
+!vs/Source/Assets/Models/TreeGrowing.obj
+
+# UI
+*.ini
+
+# Python
+license_header/.idea/*
+clion_updater/.idea/*
+draw_units/idea/*
+*.iml
+*.pyc
