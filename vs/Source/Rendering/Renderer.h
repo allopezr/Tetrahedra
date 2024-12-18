@@ -12,9 +12,9 @@
 #include "SceneContent.h"
 #include "Singleton.h"
 
-namespace AlgGeom
+namespace Tet
 {
-	class Renderer : public Singleton<Renderer>, public AlgGeom::ResizeListener, public AlgGeom::ScreenshotListener
+	class Renderer : public Singleton<Renderer>, public Tet::ResizeListener, public Tet::ScreenshotListener
 	{
 		friend class Singleton<Renderer>;
 
@@ -28,20 +28,20 @@ namespace AlgGeom
 	private:
 		Renderer();
 
-		void renderLine(Model3D::MatrixRenderInformation* matrixInformation);
-		void renderPoint(Model3D::MatrixRenderInformation* matrixInformation);
-		void renderTriangle(Model3D::MatrixRenderInformation* matrixInformation);
-		void transferLightUniforms(RenderingShader* shader);
+		void renderLine(Model3D::MatrixRenderInformation* matrixInformation) const;
+		void renderPoint(Model3D::MatrixRenderInformation* matrixInformation) const;
+		void renderTriangle(Model3D::MatrixRenderInformation* matrixInformation) const;
+		void transferLightUniforms(RenderingShader* shader) const;
 
 	public:
 		virtual ~Renderer();
-		void createCamera();
-		void createModels();
+		void createCamera() const;
+		void createModels() const;
 		void createShaderProgram();
-		Camera* getCamera() { return _content->_camera[_appState->_selectedCamera].get(); }
+		Camera* getCamera() const { return _content->_camera[_appState->_selectedCamera].get(); }
 		void prepareOpenGL(uint16_t width, uint16_t height, ApplicationState* appState);
-		void removeModel();
-		void render(float alpha = 1.0f, bool renderGui = true, bool bindScreenshoter = false);
+		void removeModel() const;
+		void render(float alpha = 1.0f, bool renderGui = true, bool bindScreenshoter = false) const;
 		virtual void resizeEvent(uint16_t width, uint16_t height);
 		virtual void screenshotEvent(const ScreenshotEvent& event);
 	};

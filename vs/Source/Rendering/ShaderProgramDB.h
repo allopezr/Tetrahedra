@@ -3,7 +3,7 @@
 #include "RenderingShader.h"
 #include "Singleton.h"
 
-namespace AlgGeom
+namespace Tet
 {
 	class ShaderProgramDB : public Singleton<ShaderProgramDB>
 	{
@@ -11,7 +11,7 @@ namespace AlgGeom
 
 	private:
 		static std::unordered_map<uint8_t, std::string>								RENDERING_SHADER_PATH;
-		static std::unordered_map<uint8_t, std::unique_ptr<AlgGeom::RenderingShader>>	_renderingShader;
+		static std::unordered_map<uint8_t, std::unique_ptr<Tet::RenderingShader>>	_renderingShader;
 
 	public:
 		enum RenderingShaderId

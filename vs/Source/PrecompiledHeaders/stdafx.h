@@ -1,3 +1,21 @@
+#pragma once
+
+// IMPORTANTE: El include de GLEW debe estar siempre ANTES de el de GLFW
+#include "GL/glew.h"								
+#include "GLFW/glfw3.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/constants.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/ext/vector_relational.hpp"  
+#include "glm/gtc/epsilon.hpp"   
+#include "glm/gtx/norm.hpp"
+
+// Gui
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
+// Others
 #include <any>
 #include <chrono>
 #include <cmath>
@@ -19,21 +37,6 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-
-// IMPORTANTE: El include de GLEW debe estar siempre ANTES de el de GLFW
-#include "GL/glew.h"								
-#include "GLFW/glfw3.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/constants.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/ext/vector_relational.hpp"  
-#include "glm/gtc/epsilon.hpp"   
-#include "glm/gtx/norm.hpp"
-
-// Gui
-#include "imgui.h"
-#include "imgui/examples/imgui_impl_glfw.h"
-#include "imgui/examples/imgui_impl_opengl3.h"
 
 // Rename
 typedef glm::vec4 vec4;

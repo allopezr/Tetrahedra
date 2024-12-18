@@ -2,7 +2,7 @@
 
 #include "Model3D.h"
 
-namespace AlgGeom
+namespace Tet
 {
 	class DrawMesh: public Model3D
 	{
@@ -10,8 +10,8 @@ namespace AlgGeom
 		Assimp::Importer _assimpImporter;
 
 	protected:
-		Model3D::Component* processMesh(aiMesh* mesh, const aiScene* scene, const std::string& folder);
-		void processNode(aiNode* node, const aiScene* scene, const std::string& folder);
+        static Model3D::Component* processMesh(const aiMesh* mesh, const aiScene* scene, const std::string& folder);
+		void processNode(const aiNode* node, const aiScene* scene, const std::string& folder);
 
 	public:
 		DrawMesh();

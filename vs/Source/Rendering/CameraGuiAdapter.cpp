@@ -3,7 +3,7 @@
 
 #include "GuiUtilities.h"
 
-void AlgGeom::CameraGuiAdapter::renderGuiObject()
+void Tet::CameraGuiAdapter::renderGuiObject()
 {
 	bool updateMatrices = false;
 

@@ -3,23 +3,23 @@
 
 #include "InputManager.h"
 
-AlgGeom::Window::Window() : _window(nullptr)
+Tet::Window::Window() : _window(nullptr)
 {
     _renderer = Renderer::getInstance();
 }
 
-void AlgGeom::Window::releaseResources()
+void Tet::Window::releaseResources()
 {
     glfwDestroyWindow(_window); // - Cerramos y destruimos la ventana de la aplicación.
     _window = nullptr;
     glfwTerminate(); // - Liberamos los recursos que ocupaba GLFW.
 }
 
-AlgGeom::Window::~Window()
+Tet::Window::~Window()
 {
 }
 
-void AlgGeom::Window::init(const std::string& title, const uint16_t width, const uint16_t height)
+void Tet::Window::init(const std::string& title, const uint16_t width, const uint16_t height)
 {
     // - Inicializa GLFW. Es un proceso que sólo debe realizarse una vez en la aplicación
     if (glfwInit() != GLFW_TRUE)
@@ -69,7 +69,7 @@ void AlgGeom::Window::init(const std::string& title, const uint16_t width, const
     GUI::getInstance()->initialize(_window, 5);
 }
 
-void AlgGeom::Window::loop()
+void Tet::Window::loop()
 {
     while (!glfwWindowShouldClose(_window))
     {

@@ -3,7 +3,7 @@
 #include "Singleton.h"
 #include "Texture.h"
 
-namespace AlgGeom
+namespace Tet
 {
 	class TextureList : public Singleton<TextureList>
 	{
@@ -26,8 +26,8 @@ namespace AlgGeom
 		};
 
 	private:
-		std::unordered_map<vec4, AlgGeom::Texture*, ColorHash, ColorEqual>	_colorTexture;
-		std::unordered_map<std::string, AlgGeom::Texture*>					_imageTexture;
+		std::unordered_map<vec4, Tet::Texture*, ColorHash, ColorEqual>	_colorTexture;
+		std::unordered_map<std::string, Tet::Texture*>					_imageTexture;
 
 	private:
 		TextureList();
@@ -35,10 +35,10 @@ namespace AlgGeom
 	public:
 		virtual ~TextureList();
 
-		AlgGeom::Texture* getTexture(const vec4& color);
-		AlgGeom::Texture* getTexture(const std::string& path);
-		void saveTexture(const vec4& color, AlgGeom::Texture* texture);
-		void saveTexture(const std::string& path, AlgGeom::Texture* texture);
+		Tet::Texture* getTexture(const vec4& color);
+		Tet::Texture* getTexture(const std::string& path);
+		void saveTexture(const vec4& color, Tet::Texture* texture);
+		void saveTexture(const std::string& path, Tet::Texture* texture);
 	};
 }
 

@@ -5,17 +5,17 @@
 
 // Static
 
-std::vector<std::shared_ptr<AlgGeom::CameraProjection>> AlgGeom::CameraProjection::_cameraProjection{
-	std::shared_ptr<AlgGeom::CameraProjection>(new AlgGeom::PerspectiveProjection()),
-	std::shared_ptr<AlgGeom::CameraProjection>(new AlgGeom::OrthographicProjection())
+std::vector<std::shared_ptr<Tet::CameraProjection>> Tet::CameraProjection::_cameraProjection{
+    std::make_shared<Tet::PerspectiveProjection>(),
+    std::make_shared<Tet::OrthographicProjection>()
 };
 
-float AlgGeom::CameraProjection::CameraProperties::computeAspect()
+float Tet::CameraProjection::CameraProperties::computeAspect() const
 {
 	return static_cast<float>(_width) / static_cast<float>(_height);
 }
 
-void AlgGeom::CameraProjection::CameraProperties::computeAxes(vec3& n, vec3& u, vec3& v)
+void Tet::CameraProjection::CameraProperties::computeAxes(vec3& n, vec3& u, vec3& v) const
 {
 	n = glm::normalize(_eye - _lookAt);							// z axis
 
@@ -34,7 +34,7 @@ void AlgGeom::CameraProjection::CameraProperties::computeAxes(vec3& n, vec3& u, 
 	v = glm::normalize(glm::cross(n, u));					// y axis
 }
 
-vec2 AlgGeom::CameraProjection::CameraProperties::computeBottomLeftCorner()
+vec2 Tet::CameraProjection::CameraProperties::computeBottomLeftCorner()
 {
 	const float halfWidth = _width / 2.0f;
 	const float halfHeight = _height / 2.0f;
@@ -42,41 +42,41 @@ vec2 AlgGeom::CameraProjection::CameraProperties::computeBottomLeftCorner()
 	return vec2(-halfWidth, -halfHeight);
 }
 
-float AlgGeom::CameraProjection::CameraProperties::computeFovY()
+float Tet::CameraProjection::CameraProperties::computeFovY()
 {
 	return 2.0f * glm::atan(glm::tan(_fovX / 2.0f) / _aspect);
 }
 
-void AlgGeom::CameraProjection::CameraProperties::computeProjectionMatrices(CameraProperties* camera)
+void Tet::CameraProjection::CameraProperties::computeProjectionMatrices(CameraProperties* camera)
 {
 	_projectionMatrix = _cameraProjection[_cameraType]->buildProjectionMatrix(camera);
 	_viewProjectionMatrix = _projectionMatrix * _viewMatrix;
 }
 
-void AlgGeom::CameraProjection::CameraProperties::computeViewMatrices()
+void Tet::CameraProjection::CameraProperties::computeViewMatrices()
 {
 	this->computeViewMatrix();
 	_viewProjectionMatrix = _projectionMatrix * _viewMatrix;
 }
 
-void AlgGeom::CameraProjection::CameraProperties::computeViewMatrix()
+void Tet::CameraProjection::CameraProperties::computeViewMatrix()
 {
 	_viewMatrix = glm::lookAt(_eye, _lookAt, _up);
 }
 
-void AlgGeom::CameraProjection::CameraProperties::zoom(float speed)
+void Tet::CameraProjection::CameraProperties::zoom(float speed)
 {
 	CameraProjection::_cameraProjection[this->_cameraType]->zoom(this, speed);
 }
 
 // Projection
 
-mat4 AlgGeom::PerspectiveProjection::buildProjectionMatrix(CameraProperties* camera)
+mat4 Tet::PerspectiveProjection::buildProjectionMatrix(CameraProperties* camera)
 {
     return glm::perspective(camera->_fovY, camera->_aspect, camera->_zNear, camera->_zFar);
 }
 
-void AlgGeom::PerspectiveProjection::zoom(CameraProperties* camera, const float speed)
+void Tet::PerspectiveProjection::zoom(CameraProperties* camera, const float speed)
 {
 	float angle = camera->_fovY - speed;
 	if (angle < glm::pi<float>() && angle > 0.0f)
@@ -86,13 +86,13 @@ void AlgGeom::PerspectiveProjection::zoom(CameraProperties* camera, const float 
 	}
 }
 
-mat4 AlgGeom::OrthographicProjection::buildProjectionMatrix(CameraProperties* camera)
+mat4 Tet::OrthographicProjection::buildProjectionMatrix(CameraProperties* camera)
 {
 	glm::vec2 bottomLeftCorner = camera->_bottomLeftCorner;
 	return glm::ortho(bottomLeftCorner.x, -bottomLeftCorner.x, bottomLeftCorner.y, -bottomLeftCorner.y, camera->_zNear, camera->_zFar);
 }
 
-void AlgGeom::OrthographicProjection::zoom(CameraProperties* camera, const float speed)
+void Tet::OrthographicProjection::zoom(CameraProperties* camera, const float speed)
 {
 	const float units = -speed;
 	const float raspect = camera->_aspect;

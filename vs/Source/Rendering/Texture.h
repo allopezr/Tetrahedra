@@ -4,7 +4,7 @@
 #include "Image.h"
 #include "ShaderProgram.h"
 
-namespace AlgGeom
+namespace Tet
 {
 	class Texture
 	{
@@ -25,9 +25,9 @@ namespace AlgGeom
 		Texture(const vec4& color);
 		virtual ~Texture();
 
-		void applyTexture(AlgGeom::ShaderProgram* shader, const GLint id, const std::string& shaderVariable);
+		void applyTexture(Tet::ShaderProgram* shader, const GLint id, const std::string& shaderVariable) const;
 
-		vec4 getColor() { return _color; }
+		vec4 getColor() const { return _color; }
 		std::string getFilename() { return _filename; }
 	};
 }

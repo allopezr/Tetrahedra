@@ -2,7 +2,7 @@
 
 #define RESTART_PRIMITIVE_INDEX 0xFFFFFFFF
 
-namespace AlgGeom
+namespace Tet
 {
 	class VAO
 	{
@@ -39,11 +39,11 @@ namespace AlgGeom
 		VAO(bool interleaved = true);
 		virtual ~VAO();
 
-		void drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices);
+		void drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices) const;
 
 		template<typename T>
 		void setVBOData(VBO_slots vbo, T* geometryData, GLuint size, GLuint changeFrequency = GL_STATIC_DRAW);
-		void setVBOData(const std::vector<Vertex>& vertices, GLuint changeFrequency = GL_STATIC_DRAW);
+		void setVBOData(const std::vector<Vertex>& vertices, GLuint changeFrequency = GL_STATIC_DRAW) const;
 		void setIBOData(IBO_slots ibo, const std::vector<GLuint>& indices, GLuint changeFrequency = GL_STATIC_DRAW);
 	};
 

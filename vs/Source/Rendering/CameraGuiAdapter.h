@@ -3,7 +3,7 @@
 #include "Camera.h"
 #include "InterfaceAdapter.h"
 
-namespace AlgGeom
+namespace Tet
 {
 	class CameraGuiAdapter : public InterfaceAdapter
 	{

@@ -15,11 +15,12 @@
 #define GLTF_EXTENSION ".gltf"
 #define OBJ_EXTENSION ".obj"
 
-namespace AlgGeom
+namespace Tet
 {
 	class Model3D
 	{
 		friend class GUI;
+		friend class DrawTetrahedron;
 
 	protected:
 		struct Material
@@ -32,7 +33,7 @@ namespace AlgGeom
 			vec3		_pointColor;
 			vec3		_lineColor;
 
-			Material() : _kdColor(1.00, 0.81, 0.29, 1.0f), _ksColor(.5f), _kadTexture(nullptr), _useUniformColor(true), _metallic(.7f), _roughnessK(.3f), _pointColor(.0f), _lineColor(.0f) {}
+			Material() : _kdColor(1.00, 0.81, 0.29, 1.0f), _ksColor(.5f), _metallic(.7f), _roughnessK(.3f), _kadTexture(nullptr), _useUniformColor(true), _pointColor(.0f), _lineColor(.0f) {}
 		};
 
 	public:
@@ -43,7 +44,7 @@ namespace AlgGeom
 
 			std::vector<VAO::Vertex>		_vertices;
 			std::vector<GLuint>				_indices[VAO::NUM_IBOS];
-			VAO*							_vao;
+			std::shared_ptr<VAO>			_vao;
 			AABB							_aabb;
 
 			Material						_material;
@@ -52,14 +53,18 @@ namespace AlgGeom
 			bool							_activeRendering[VAO::NUM_IBOS];
 
 			Component(VAO* vao = nullptr) { 
-				_enabled = true; _vao = vao; _pointSize = 3.0f; _lineWidth = 1.0f; 			
-				for (int i = 0; i < VAO::NUM_IBOS; ++i) _activeRendering[i] = true;
+				_enabled = true; _pointSize = 3.0f; _lineWidth = 1.0f; 			
+				for (bool& i : _activeRendering) i = true;
+				_vao = vao ? std::shared_ptr<VAO>(vao) : std::make_shared<VAO>();
 			}
-			~Component() { delete _vao; _vao = nullptr; }
+			~Component() { }
 
+            Component* copy() const;
 			void completeTopology();
 			void generateWireframe();
 			void generatePointCloud();
+
+			void updateAABB();
 		};
 
 	public:
@@ -88,18 +93,21 @@ namespace AlgGeom
 		std::string									_name;
 
 	protected:
-		void buildVao(Component* component);
+        static void buildVao(Component* component);
+		static Component* getVoxel();
 		void loadModelBinaryFile(const std::string& path);
-		void writeBinaryFile(const std::string& path);
+		void updateAABB();
+		void writeBinaryFile(const std::string& path) const;
 
 	public:
 		Model3D();
 		virtual ~Model3D();
+		virtual Model3D* copy();
 
-		bool belongsModel(Component* component);
+		bool belongsModel(const Component* component) const;
 		virtual void draw(RenderingShader* shader, MatrixRenderInformation* matrixInformation, ApplicationState* appState, GLuint primitive);
-		AABB getAABB() { return _aabb.dot(_modelMatrix); }
-		mat4 getModelMatrix() { return _modelMatrix; }
+		AABB getAABB() const { return _aabb.dot(_modelMatrix); }
+		mat4 getModelMatrix() const { return _modelMatrix; }
 		std::string getName() { return _name; }
 		Model3D* moveGeometryToOrigin(const mat4& origMatrix = mat4(1.0f), float maxScale = FLT_MAX);
 		Model3D* overrideModelName();
@@ -110,6 +118,9 @@ namespace AlgGeom
 		Model3D* setLineWidth(float width);
 		Model3D* setPointSize(float size);
 		Model3D* setTopologyVisibility(VAO::IBO_slots topology, bool visible);
+
+		std::vector<VAO::Vertex> vertices() const;
+		std::vector<GLuint> indices(VAO::IBO_slots ibo) const;
 	};
 }
 

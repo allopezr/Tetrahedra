@@ -3,21 +3,36 @@
 
 // Static properties
 
-std::string AlgGeom::Model3D::CHECKER_PATTERN_PATH = "Assets/Textures/Checker.png";
-std::unordered_set<std::string> AlgGeom::Model3D::USED_NAMES;
+std::string Tet::Model3D::CHECKER_PATTERN_PATH = "Assets/Textures/Checker.png";
+std::unordered_set<std::string> Tet::Model3D::USED_NAMES;
 
 // Public methods
 
-AlgGeom::Model3D::Model3D(): _modelMatrix(1.0f)
+Tet::Model3D::Model3D(): _modelMatrix(1.0f)
 {
     this->overrideModelName();
 }
 
-AlgGeom::Model3D::~Model3D()
+Tet::Model3D::~Model3D()
+= default;
+
+Tet::Model3D* Tet::Model3D::copy()
 {
+    Model3D* newModel = new Model3D;
+
+    newModel->_modelMatrix = this->_modelMatrix;
+    newModel->_name = this->_name + " copy";
+    newModel->_aabb = this->_aabb;
+
+    for (auto& component : _components)
+    {
+        newModel->_components.push_back(std::unique_ptr<Component>(component->copy()));
+    }
+
+    return newModel;
 }
 
-bool AlgGeom::Model3D::belongsModel(Component* component)
+bool Tet::Model3D::belongsModel(const Component* component) const
 {
     for (auto& comp : _components)
     {
@@ -28,7 +43,7 @@ bool AlgGeom::Model3D::belongsModel(Component* component)
     return false;
 }
 
-void AlgGeom::Model3D::draw(RenderingShader* shader, MatrixRenderInformation* matrixInformation, ApplicationState* appState, GLuint primitive)
+void Tet::Model3D::draw(RenderingShader* shader, MatrixRenderInformation* matrixInformation, ApplicationState* appState, GLuint primitive)
 {
     for (auto& component : _components)
     {
@@ -84,7 +99,7 @@ void AlgGeom::Model3D::draw(RenderingShader* shader, MatrixRenderInformation* ma
     }
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::moveGeometryToOrigin(const mat4& origMatrix, float maxScale)
+Tet::Model3D* Tet::Model3D::moveGeometryToOrigin(const mat4& origMatrix, float maxScale)
 {
     AABB aabb = this->getAABB();
 
@@ -98,7 +113,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::moveGeometryToOrigin(const mat4& origMatrix,
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::overrideModelName()
+Tet::Model3D* Tet::Model3D::overrideModelName()
 {
     std::string className = typeid(*this).name();
     std::string classTarget = "class ";
@@ -114,7 +129,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::overrideModelName()
     while (!nameValid)
     {
         this->_name = className + " " + std::to_string(modelIdx);
-        nameValid = USED_NAMES.find(this->_name) == USED_NAMES.end();
+        nameValid = !USED_NAMES.contains(this->_name);
         ++modelIdx;
     }
 
@@ -123,7 +138,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::overrideModelName()
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::setLineColor(const vec3& color)
+Tet::Model3D* Tet::Model3D::setLineColor(const vec3& color)
 {
     for (auto& component : _components)
     {
@@ -133,7 +148,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::setLineColor(const vec3& color)
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::setPointColor(const vec3& color)
+Tet::Model3D* Tet::Model3D::setPointColor(const vec3& color)
 {
     for (auto& component : _components)
     {
@@ -143,7 +158,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::setPointColor(const vec3& color)
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::setTriangleColor(const vec4& color)
+Tet::Model3D* Tet::Model3D::setTriangleColor(const vec4& color)
 {
     for (auto& component : _components)
     {
@@ -153,7 +168,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::setTriangleColor(const vec4& color)
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::setLineWidth(float width)
+Tet::Model3D* Tet::Model3D::setLineWidth(float width)
 {
     for (auto& component : _components)
     {
@@ -163,7 +178,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::setLineWidth(float width)
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::setPointSize(float size)
+Tet::Model3D* Tet::Model3D::setPointSize(float size)
 {
     for (auto& component : _components)
     {
@@ -173,7 +188,7 @@ AlgGeom::Model3D* AlgGeom::Model3D::setPointSize(float size)
     return this;
 }
 
-AlgGeom::Model3D* AlgGeom::Model3D::setTopologyVisibility(VAO::IBO_slots topology, bool visible)
+Tet::Model3D* Tet::Model3D::setTopologyVisibility(VAO::IBO_slots topology, bool visible)
 {
     for (auto& component : _components)
     {
@@ -183,29 +198,102 @@ AlgGeom::Model3D* AlgGeom::Model3D::setTopologyVisibility(VAO::IBO_slots topolog
     return this;
 }
 
+std::vector<Tet::VAO::Vertex> Tet::Model3D::vertices() const
+{
+    std::vector<VAO::Vertex> vertices;
+
+    for (const auto& component : _components)
+        for (const VAO::Vertex& vertex : component->_vertices)
+        {
+            VAO::Vertex vertexCopy = vertex;
+            vertexCopy._position = vec3(_modelMatrix * vec4(vertex._position, 1.0f));
+            vertexCopy._normal = glm::normalize(vec3(_modelMatrix * vec4(vertex._normal, 0.0f)));
+            vertices.push_back(vertexCopy);
+        }
+
+    return vertices;
+}
+
+std::vector<GLuint> Tet::Model3D::indices(VAO::IBO_slots ibo) const
+{
+    std::vector<GLuint> indices;
+
+    for (const auto& component : _components)
+        for (GLuint index : component->_indices[ibo])
+            indices.push_back(index);
+
+    return indices;
+}
+
 // Private methods
 
-void AlgGeom::Model3D::buildVao(Component* component)
+void Tet::Model3D::buildVao(Component* component)
 {
     VAO* vao = new VAO(true);
     vao->setVBOData(component->_vertices);
     vao->setIBOData(VAO::IBO_POINT, component->_indices[VAO::IBO_POINT]);
     vao->setIBOData(VAO::IBO_LINE, component->_indices[VAO::IBO_LINE]);
     vao->setIBOData(VAO::IBO_TRIANGLE, component->_indices[VAO::IBO_TRIANGLE]);
-    component->_vao = vao;
+    component->_vao = std::shared_ptr<VAO>(vao);
 }
 
-void AlgGeom::Model3D::loadModelBinaryFile(const std::string& path)
+Tet::Model3D::Component* Tet::Model3D::getVoxel()
+{
+    Component* component = new Component;
+
+    // Geometry
+    {
+        constexpr vec3 minPosition(-.5f), maxPosition(.5f);
+        const std::vector<vec3> points
+        {
+            vec3(minPosition[0], minPosition[1], maxPosition[2]),		vec3(maxPosition[0], minPosition[1], maxPosition[2]),
+            vec3(minPosition[0], minPosition[1], minPosition[2]),	    vec3(maxPosition[0], minPosition[1], minPosition[2]),
+            vec3(minPosition[0], maxPosition[1], maxPosition[2]),		vec3(maxPosition[0], maxPosition[1], maxPosition[2]),
+            vec3(minPosition[0], maxPosition[1], minPosition[2]),		vec3(maxPosition[0], maxPosition[1], minPosition[2])
+        };
+        const std::vector<vec3> normals
+        {
+            glm::normalize(vec3(-0.5f, -0.5f, 0.5f)),	glm::normalize(vec3(0.5f, -0.5f, 0.5f)),
+            glm::normalize(vec3(-0.5f, -0.5f, -0.5f)),	glm::normalize(vec3(0.5f, -0.5f, -0.5f)),
+            glm::normalize(vec3(-0.5f, 0.5f, 0.5f)),	glm::normalize(vec3(0.5f, 0.5f, 0.5f)),
+            glm::normalize(vec3(-0.5f, 0.5f, -0.5f)),	glm::normalize(vec3(0.5f, 0.5f, -0.5f))
+        };
+        const std::vector<vec2> textCoords{ vec2(0.0f), vec2(0.0f), vec2(0.0f), vec2(0.0f), vec2(0.0f), vec2(0.0f), vec2(0.0f), vec2(0.0f) };
+
+        for (int pointIdx = 0; pointIdx < points.size(); ++pointIdx)
+        {
+            component->_vertices.push_back(VAO::Vertex{ points[pointIdx], normals[pointIdx], textCoords[pointIdx] });
+        }
+    }
+
+    // Topology
+    {
+        component->_indices[VAO::IBO_TRIANGLE] = std::vector<GLuint>
+        {
+            0, 1, 2, RESTART_PRIMITIVE_INDEX, 1, 3, 2, RESTART_PRIMITIVE_INDEX, 4, 5, 6, RESTART_PRIMITIVE_INDEX,
+            5, 7, 6, RESTART_PRIMITIVE_INDEX, 0, 1, 4, RESTART_PRIMITIVE_INDEX, 1, 5, 4, RESTART_PRIMITIVE_INDEX,
+            2, 0, 4, RESTART_PRIMITIVE_INDEX, 2, 4, 6, RESTART_PRIMITIVE_INDEX, 1, 3, 5, RESTART_PRIMITIVE_INDEX,
+            3, 7, 5, RESTART_PRIMITIVE_INDEX, 3, 2, 6, RESTART_PRIMITIVE_INDEX, 3, 6, 7, RESTART_PRIMITIVE_INDEX
+        };
+
+        component->generatePointCloud();
+        component->generateWireframe();
+    }
+
+    return component;
+}
+
+void Tet::Model3D::loadModelBinaryFile(const std::string& path)
 {
     std::ifstream fin(path, std::ios::in | std::ios::binary);
     if (!fin.is_open())
     {
-        std::cout << "Failed to open the binary file " << path << "!" << std::endl;
+        std::cout << "Failed to open the binary file " << path << "!" << '\n';
         return;
     }
 
     size_t numComponents = _components.size();
-    fin.read((char*)&numComponents, sizeof(size_t));
+    fin.read(reinterpret_cast<char*>(&numComponents), sizeof(size_t));
     _components.resize(numComponents);
 
     for (size_t compIdx = 0; compIdx < numComponents; ++compIdx)
@@ -213,28 +301,39 @@ void AlgGeom::Model3D::loadModelBinaryFile(const std::string& path)
         Component* component = new Component;
         size_t numVertices, numIndices;
 
-        fin.read((char*)&numVertices, sizeof(size_t));
+        fin.read(reinterpret_cast<char*>(&numVertices), sizeof(size_t));
         component->_vertices.resize(numVertices);
-        fin.read((char*)component->_vertices.data(), sizeof(VAO::Vertex) * numVertices);
+        fin.read(reinterpret_cast<char*>(component->_vertices.data()), sizeof(VAO::Vertex) * numVertices);
 
         for (int topology = 0; topology < VAO::NUM_IBOS; ++topology)
         {
-            fin.read((char*)&numIndices, sizeof(size_t));
+            fin.read(reinterpret_cast<char*>(&numIndices), sizeof(size_t));
             if (numIndices)
             {
                 component->_indices[topology].resize(numIndices);
-                fin.read((char*)component->_indices[topology].data(), sizeof(GLuint) * numIndices);
+                fin.read(reinterpret_cast<char*>(component->_indices[topology].data()), sizeof(GLuint) * numIndices);
             }
         }
 
-        fin.read((char*)&component->_aabb, sizeof(AABB));
+        fin.read(reinterpret_cast<char*>(&component->_aabb), sizeof(AABB));
 
         _components[compIdx] = std::unique_ptr<Component>(component);
         _aabb.update(_components[compIdx]->_aabb);
     }
 }
 
-void AlgGeom::Model3D::writeBinaryFile(const std::string& path)
+void Tet::Model3D::updateAABB()
+{
+    _aabb = AABB();
+
+    for (auto& component: _components)
+    {
+        component->updateAABB();
+        _aabb.update(component->_aabb);
+    }
+}
+
+void Tet::Model3D::writeBinaryFile(const std::string& path) const
 {
     std::ofstream fout(path, std::ios::out | std::ios::binary);
     if (!fout.is_open())
@@ -266,7 +365,7 @@ void AlgGeom::Model3D::writeBinaryFile(const std::string& path)
     fout.close();
 }
 
-AlgGeom::Model3D::MatrixRenderInformation::MatrixRenderInformation()
+Tet::Model3D::MatrixRenderInformation::MatrixRenderInformation()
 {
     for (mat4& matrix : _matrix)
     {
@@ -274,7 +373,7 @@ AlgGeom::Model3D::MatrixRenderInformation::MatrixRenderInformation()
     }
 }
 
-void AlgGeom::Model3D::MatrixRenderInformation::undoMatrix(MatrixType type)
+void Tet::Model3D::MatrixRenderInformation::undoMatrix(MatrixType type)
 {
     if (_heapMatrices[type].empty())
     {
@@ -287,7 +386,33 @@ void AlgGeom::Model3D::MatrixRenderInformation::undoMatrix(MatrixType type)
     }
 }
 
-void AlgGeom::Model3D::Component::completeTopology()
+Tet::Model3D::Component* Tet::Model3D::Component::copy() const
+{
+    Component* newComponent = new Component;
+
+    newComponent->_enabled = this->_enabled;
+    newComponent->_name = this->_name + " copy";
+
+    newComponent->_activeRendering[VAO::IBO_POINT] = this->_activeRendering[VAO::IBO_POINT];
+    newComponent->_activeRendering[VAO::IBO_LINE] = this->_activeRendering[VAO::IBO_LINE];
+    newComponent->_activeRendering[VAO::IBO_TRIANGLE] = this->_activeRendering[VAO::IBO_TRIANGLE];
+
+    newComponent->_vertices = this->_vertices;
+    newComponent->_indices[VAO::IBO_POINT] = this->_indices[VAO::IBO_POINT];
+    newComponent->_indices[VAO::IBO_LINE] = this->_indices[VAO::IBO_LINE];
+    newComponent->_indices[VAO::IBO_TRIANGLE] = this->_indices[VAO::IBO_TRIANGLE];
+
+    newComponent->_vao = this->_vao;
+    newComponent->_aabb = this->_aabb;
+
+    newComponent->_material = this->_material;
+    newComponent->_lineWidth = this->_lineWidth;
+    newComponent->_pointSize = this->_pointSize;
+
+    return newComponent;
+}
+
+void Tet::Model3D::Component::completeTopology()
 {
     if (!this->_indices[VAO::IBO_TRIANGLE].empty() && this->_indices[VAO::IBO_LINE].empty())
     {
@@ -300,7 +425,7 @@ void AlgGeom::Model3D::Component::completeTopology()
     }
 }
 
-void AlgGeom::Model3D::Component::generateWireframe()
+void Tet::Model3D::Component::generateWireframe()
 {
     std::unordered_map<int, std::unordered_set<int>>* segmentIncluded = new std::unordered_map<int, std::unordered_set<int>>;
     auto isIncluded = [&](int index1, int index2) -> bool
@@ -328,7 +453,7 @@ void AlgGeom::Model3D::Component::generateWireframe()
 
     const size_t numIndices = this->_indices[VAO::IBO_TRIANGLE].size();
 
-    for (size_t i = 0; i < numIndices; i += 4)
+    for (size_t i = 0; i < numIndices; i += 3)
     {
         for (size_t j = 0; j < 3; ++j)
         {
@@ -342,8 +467,18 @@ void AlgGeom::Model3D::Component::generateWireframe()
     }
 }
 
-void AlgGeom::Model3D::Component::generatePointCloud()
+void Tet::Model3D::Component::generatePointCloud()
 {
     this->_indices[VAO::IBO_POINT].resize(this->_vertices.size());
     std::iota(this->_indices[VAO::IBO_POINT].begin(), this->_indices[VAO::IBO_POINT].end(), 0);
+}
+
+void Tet::Model3D::Component::updateAABB()
+{
+    _aabb = AABB();
+
+    for (const VAO::Vertex& vertex : _vertices)
+    {
+        _aabb.update(vertex._position);
+    }
 }

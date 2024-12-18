@@ -64,12 +64,12 @@ public:
 	/**
 	*	@brief Checks if the coordinates of this point are different from the coordinates of a point p.
 	*/
-	bool distinct(Point& p) { return BasicGeometry::equal(_x, p._x) or BasicGeometry::equal(_y, p._y); }
+	bool distinct(const Point& p) const { return BasicGeometry::equal(_x, p._x) or BasicGeometry::equal(_y, p._y); }
 
 	/**
 	*	@brief Checks if the coordinates of this point are equal from the coordinates of a point p.
 	*/
-	bool equal(Point& p) { return BasicGeometry::equal(_x, p._x) and BasicGeometry::equal(_y, p._y); }
+	bool equal(const Point& p) const { return BasicGeometry::equal(_x, p._x) and BasicGeometry::equal(_y, p._y); }
 
 	 /**
 	 *	@brief Checks the position of the point respect to other two points (a, b).
@@ -94,7 +94,7 @@ public:
 	/**
 	*	@brief Module of _a 2D structure. This method is useful for child classes.
 	*/
-	double getModule();
+	double getModule() const;
 
 	/**
 	*	@brief Checks the position of the point respect to other two points (a, b).

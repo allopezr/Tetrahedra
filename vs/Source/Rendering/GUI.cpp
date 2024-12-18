@@ -9,7 +9,7 @@
 #include "ImGuiFileDialog.h"
 #include "InputManager.h"
 
-AlgGeom::GUI::GUI()
+Tet::GUI::GUI()
 {
 	_appState = InputManager::getApplicationState();
 	_cameraGuiAdapter = new CameraGuiAdapter;
@@ -23,14 +23,14 @@ AlgGeom::GUI::GUI()
 	for (int idx = 0; idx < NUM_GUI_MENU_BUTTONS; ++idx) _showMenuButtons[idx] = false;
 }
 
-AlgGeom::GUI::~GUI()
+Tet::GUI::~GUI()
 {
 	delete[] _showMenuButtons;
 
 	ImGui::DestroyContext();
 }
 
-void AlgGeom::GUI::editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mode)
+void Tet::GUI::editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mode)
 {
 	if (ImGui::RadioButton("Translate", operation == ImGuizmo::TRANSLATE))
 	{
@@ -64,7 +64,7 @@ void AlgGeom::GUI::editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE&
 	}
 }
 
-void AlgGeom::GUI::loadFonts()
+void Tet::GUI::loadFonts()
 {
 	ImFontConfig cfg;
 	ImGuiIO& io = ImGui::GetIO();
@@ -72,24 +72,24 @@ void AlgGeom::GUI::loadFonts()
 	std::copy_n("Lato", 5, cfg.Name);
 	io.Fonts->AddFontFromMemoryCompressedBase85TTF(LatoFont::lato_compressed_data_base85, 13.0f, &cfg);
 
-	static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+	static constexpr ImWchar iconsRanges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 	cfg.MergeMode = true;
 	cfg.PixelSnapH = true;
 	cfg.GlyphMinAdvanceX = 20.0f;
 	cfg.GlyphMaxAdvanceX = 20.0f;
 	std::copy_n("FontAwesome", 12, cfg.Name);
 
-	io.Fonts->AddFontFromFileTTF("Assets/Fonts/fa-regular-400.ttf", 12.0f, &cfg, icons_ranges);
-	io.Fonts->AddFontFromFileTTF("Assets/Fonts/fa-solid-900.ttf", 12.0f, &cfg, icons_ranges);
+	io.Fonts->AddFontFromFileTTF("Assets/Fonts/fa-regular-400.ttf", 12.0f, &cfg, iconsRanges);
+	io.Fonts->AddFontFromFileTTF("Assets/Fonts/fa-solid-900.ttf", 12.0f, &cfg, iconsRanges);
 }
 
-void AlgGeom::GUI::loadImGUIStyle()
+void Tet::GUI::loadImGUIStyle() const
 {
 	ImGui::StyleColorsDark();
 	this->loadFonts();
 }
 
-void AlgGeom::GUI::processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent)
+void Tet::GUI::processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent)
 {
 	if (fileDialog == FileDialog::OPEN_MESH)
 	{
@@ -99,24 +99,23 @@ void AlgGeom::GUI::processSelectedFile(FileDialog fileDialog, const std::string&
 	}
 }
 
-void AlgGeom::GUI::renderGuizmo(Model3D::Component* component, SceneContent* sceneContent)
+void Tet::GUI::renderGuizmo(const Model3D::Component* component, SceneContent* sceneContent)
 {
 	if (component && _showMenuButtons[MenuButtons::MODELS])
 	{
-		if (ImGui::IsKeyPressed('T'))
+		if (ImGui::IsKeyPressed(ImGuiKey_T))
 			_currentGizmoOperation = ImGuizmo::TRANSLATE;
 
-		if (ImGui::IsKeyPressed('R'))
+		if (ImGui::IsKeyPressed(ImGuiKey_R))
 			_currentGizmoOperation = ImGuizmo::ROTATE;
 
-		if (ImGui::IsKeyPressed('S'))
+		if (ImGui::IsKeyPressed(ImGuiKey_S))
 			_currentGizmoOperation = ImGuizmo::SCALE;
 
 		const mat4 viewMatrix = mat4(sceneContent->_camera[_appState->_selectedCamera]->getViewMatrix());
 		const mat4 projectionMatrix = mat4(sceneContent->_camera[_appState->_selectedCamera]->getProjectionMatrix());
-		Model3D* model = sceneContent->getModel(component);
 
-		if (model)
+        if (Model3D* model = sceneContent->getModel(component))
 		{
 			mat4 modelMatrix = model->getModelMatrix();
 
@@ -129,7 +128,7 @@ void AlgGeom::GUI::renderGuizmo(Model3D::Component* component, SceneContent* sce
 	}
 }
 
-void AlgGeom::GUI::initialize(GLFWwindow* window, const int openGLMinorVersion)
+void Tet::GUI::initialize(GLFWwindow* window, const int openGLMinorVersion) const
 {
 	const std::string openGLVersion = "#version 4" + std::to_string(openGLMinorVersion) + "0 core";
 
@@ -142,7 +141,7 @@ void AlgGeom::GUI::initialize(GLFWwindow* window, const int openGLMinorVersion)
 	ImGui_ImplOpenGL3_Init(openGLVersion.c_str());
 }
 
-void AlgGeom::GUI::render(SceneContent* sceneContent)
+void Tet::GUI::render(SceneContent* sceneContent)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -182,11 +181,11 @@ void AlgGeom::GUI::render(SceneContent* sceneContent)
 	{
 		if (ImGui::BeginMenu(ICON_FA_COG "Settings"))
 		{
-			ImGui::MenuItem(ICON_FA_DRAW_POLYGON "Rendering", NULL, &_showMenuButtons[MenuButtons::RENDERING]);
-			ImGui::MenuItem(ICON_FA_CUBE "Models", NULL, &_showMenuButtons[MenuButtons::MODELS]);
-			ImGui::MenuItem(ICON_FA_CAMERA_RETRO "Camera", NULL, &_showMenuButtons[MenuButtons::CAMERA]);
-			ImGui::MenuItem(ICON_FA_LIGHTBULB "Light", NULL, &_showMenuButtons[MenuButtons::LIGHT]);
-			ImGui::MenuItem(ICON_FA_CAMERA "Screenshot", NULL, &_showMenuButtons[MenuButtons::SCREENSHOT]);
+			ImGui::MenuItem(ICON_FA_DRAW_POLYGON "Rendering", nullptr, &_showMenuButtons[MenuButtons::RENDERING]);
+			ImGui::MenuItem(ICON_FA_CUBE "Models", nullptr, &_showMenuButtons[MenuButtons::MODELS]);
+			ImGui::MenuItem(ICON_FA_CAMERA_RETRO "Camera", nullptr, &_showMenuButtons[MenuButtons::CAMERA]);
+			ImGui::MenuItem(ICON_FA_LIGHTBULB "Light", nullptr, &_showMenuButtons[MenuButtons::LIGHT]);
+			ImGui::MenuItem(ICON_FA_CAMERA "Screenshot", nullptr, &_showMenuButtons[MenuButtons::SCREENSHOT]);
 			ImGui::EndMenu();
 		}
 
@@ -202,7 +201,7 @@ void AlgGeom::GUI::render(SceneContent* sceneContent)
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void AlgGeom::GUI::showCameraMenu(SceneContent* sceneContent)
+void Tet::GUI::showCameraMenu(const SceneContent* sceneContent) const
 {
 	static Camera* cameraSelected = nullptr;
 
@@ -240,7 +239,7 @@ void AlgGeom::GUI::showCameraMenu(SceneContent* sceneContent)
 	}
 }
 
-void AlgGeom::GUI::showFileDialog(SceneContent* sceneContent)
+void Tet::GUI::showFileDialog(SceneContent* sceneContent)
 {
 	if (_fileDialog != NONE)
 	{
@@ -248,14 +247,14 @@ void AlgGeom::GUI::showFileDialog(SceneContent* sceneContent)
 			_lastDirectory = DEFAULT_DIRECTORY;
 
 		uint16_t iFileDialog = static_cast<uint16_t>(_fileDialog) / 2;
-		ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_TEXT[iFileDialog].c_str(), "Select a file", FILE_DIALOG_EXTENSION[iFileDialog].c_str(), _lastDirectory);
+		ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_TEXT[iFileDialog], "Select a file", FILE_DIALOG_EXTENSION[iFileDialog].c_str(), _lastDirectory);
 
-		if (ImGuiFileDialog::Instance()->Display(FILE_DIALOG_TEXT[iFileDialog].c_str()))
+		if (ImGuiFileDialog::Instance()->Display(FILE_DIALOG_TEXT[iFileDialog]))
 		{
 			if (ImGuiFileDialog::Instance()->IsOk())
 			{
 				_path = ImGuiFileDialog::Instance()->GetFilePathName();
-				_lastDirectory = _path.substr(0, _path.find_last_of("\\"));
+				_lastDirectory = _path.substr(0, _path.find_last_of('\\'));
 
 				this->processSelectedFile(_fileDialog, _path, sceneContent);
 				_fileDialog = NONE;
@@ -267,7 +266,7 @@ void AlgGeom::GUI::showFileDialog(SceneContent* sceneContent)
 	}
 }
 
-void AlgGeom::GUI::showLightMenu(SceneContent* sceneContent)
+void Tet::GUI::showLightMenu(const SceneContent* sceneContent)
 {
 	ImGui::SetNextWindowSize(ImVec2(800, 440), ImGuiCond_FirstUseEver);
 
@@ -291,7 +290,7 @@ void AlgGeom::GUI::showLightMenu(SceneContent* sceneContent)
 	}
 }
 
-void AlgGeom::GUI::showModelMenu(SceneContent* sceneContent)
+void Tet::GUI::showModelMenu(const SceneContent* sceneContent)
 {
 	ImGui::SetNextWindowSize(ImVec2(800, 440), ImGuiCond_FirstUseEver);
 
@@ -372,7 +371,7 @@ void AlgGeom::GUI::showModelMenu(SceneContent* sceneContent)
 	ImGui::End();
 }
 
-void AlgGeom::GUI::showRenderingMenu(SceneContent* sceneContent)
+void Tet::GUI::showRenderingMenu(SceneContent* sceneContent)
 {
 	if (ImGui::Begin("Rendering Settings", &_showMenuButtons[RENDERING]))
 	{
@@ -406,7 +405,7 @@ void AlgGeom::GUI::showRenderingMenu(SceneContent* sceneContent)
 	ImGui::End();
 }
 
-void AlgGeom::GUI::showScreenshotMenu(SceneContent* sceneContent)
+void Tet::GUI::showScreenshotMenu(SceneContent* sceneContent)
 {
 	auto fixName = [=](const std::string& name, const std::string& defaultName, const std::string& extension) -> std::string
 	{

@@ -11,7 +11,7 @@
 #include "Model3D.h"
 
 
-namespace AlgGeom
+namespace Tet
 {
     class DrawTriangle : public Model3D
     {
@@ -19,7 +19,7 @@ namespace AlgGeom
         Triangle _triangle;
 
     public:
-        DrawTriangle(Triangle& t);
+        DrawTriangle(const Triangle& t);
         DrawTriangle(const DrawTriangle& drawTriangle) = delete;
         virtual ~DrawTriangle() {};
     };

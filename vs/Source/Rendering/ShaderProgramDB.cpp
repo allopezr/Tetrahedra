@@ -3,27 +3,27 @@
 
 // Static attributes
 
-std::unordered_map<uint8_t, std::string> AlgGeom::ShaderProgramDB::RENDERING_SHADER_PATH{
+std::unordered_map<uint8_t, std::string> Tet::ShaderProgramDB::RENDERING_SHADER_PATH{
 		{RenderingShaderId::LINE_RENDERING, "Assets/Shaders/line"},
 		{RenderingShaderId::POINT_RENDERING, "Assets/Shaders/point"},
 		{RenderingShaderId::TRIANGLE_RENDERING, "Assets/Shaders/triangle"},
 };
 
-std::unordered_map<uint8_t, std::unique_ptr<AlgGeom::RenderingShader>> AlgGeom::ShaderProgramDB::_renderingShader;
+std::unordered_map<uint8_t, std::unique_ptr<Tet::RenderingShader>> Tet::ShaderProgramDB::_renderingShader;
 
 // Private methods
 
-AlgGeom::ShaderProgramDB::ShaderProgramDB()
+Tet::ShaderProgramDB::ShaderProgramDB()
 {
 }
 
-AlgGeom::ShaderProgramDB::~ShaderProgramDB()
+Tet::ShaderProgramDB::~ShaderProgramDB()
 {
 }
 
 // Public methods
 
-AlgGeom::RenderingShader* AlgGeom::ShaderProgramDB::getShader(RenderingShaderId shaderId)
+Tet::RenderingShader* Tet::ShaderProgramDB::getShader(RenderingShaderId shaderId)
 {
 	uint8_t shaderId8 = static_cast<uint8_t>(shaderId);
 

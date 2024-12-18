@@ -3,7 +3,7 @@
 
 // Public methods
 
-AlgGeom::DrawTriangle::DrawTriangle (Triangle &triangle): Model3D(), _triangle(triangle)
+Tet::DrawTriangle::DrawTriangle (const Triangle &triangle): Model3D(), _triangle(triangle)
 {  
     Component* component = new Component;
     component->_vertices.insert(component->_vertices.end(), {

@@ -10,14 +10,14 @@
 #include "Polygon.h"
 #include "Model3D.h"
 
-namespace AlgGeom
+namespace Tet
 {
     class DrawPolygon : public Model3D {
     protected:
         Polygon _polygon;
 
     public:
-        DrawPolygon(Polygon& polygon);
+        DrawPolygon(const Polygon& polygon);
         DrawPolygon(const DrawPolygon& ddt) = delete;
         virtual ~DrawPolygon() {};
     };

@@ -3,7 +3,7 @@
 #include "Renderer.h"
 #include "Singleton.h"
 
-namespace AlgGeom
+namespace Tet
 {
 	class Window: public Singleton<Window>
 	{

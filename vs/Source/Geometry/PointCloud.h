@@ -79,6 +79,6 @@ public:
 	/**
 	*	@brief Returns the size of the point cloud.
 	*/
-	size_t size() { return _points.size(); }
+	size_t size() const { return _points.size(); }
 };
 

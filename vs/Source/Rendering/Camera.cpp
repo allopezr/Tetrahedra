@@ -6,7 +6,7 @@
 
 // Public methods
 
-AlgGeom::Camera::Camera(uint16_t width, uint16_t height, bool is2D) : _backupCamera(nullptr)
+Tet::Camera::Camera(uint16_t width, uint16_t height, bool is2D) : _backupCamera(nullptr)
 {
 	this->_properties._cameraType = CameraProjection::PERSPECTIVE;
 	this->_properties._2d = is2D;
@@ -33,22 +33,22 @@ AlgGeom::Camera::Camera(uint16_t width, uint16_t height, bool is2D) : _backupCam
 	this->saveCamera();
 }
 
-AlgGeom::Camera::Camera(const AlgGeom::Camera& camera) : _backupCamera(nullptr)
+Tet::Camera::Camera(const Tet::Camera& camera) : _backupCamera(nullptr)
 {
 	this->copyCameraAttributes(&camera);
 }
 
-AlgGeom::Camera::~Camera()
+Tet::Camera::~Camera()
 {
 	delete _backupCamera;
 }
 
-void AlgGeom::Camera::reset()
+void Tet::Camera::reset()
 {
 	this->copyCameraAttributes(_backupCamera);
 }
 
-void AlgGeom::Camera::track(Model3D* model)
+void Tet::Camera::track(Model3D* model)
 {
 	AABB aabb = model->getAABB();
 
@@ -56,55 +56,55 @@ void AlgGeom::Camera::track(Model3D* model)
 	this->setPosition(aabb.min() + vec3(.0f, aabb.extent().y, 1.0f) - vec3(aabb.extent().x, .0f, .0) * (1 + (1.0f / std::max(aabb.size().x, std::max(aabb.size().y, aabb.size().z))) * 4.0f));
 }
 
-void AlgGeom::Camera::saveCamera()
+void Tet::Camera::saveCamera()
 {
 	delete _backupCamera;
 	_backupCamera = nullptr;
 
-	_backupCamera = new AlgGeom::Camera(*this);
+	_backupCamera = new Tet::Camera(*this);
 }
 
-void AlgGeom::Camera::setBottomLeftCorner(const vec2& bottomLeft)
+void Tet::Camera::setBottomLeftCorner(const vec2& bottomLeft)
 {
 	this->_properties._bottomLeftCorner = bottomLeft;
 	this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::setCameraType(const AlgGeom::CameraProjection::Projection projection)
+void Tet::Camera::setCameraType(const Tet::CameraProjection::Projection projection)
 {
 	this->_properties._cameraType = projection;
 	this->_properties.computeViewMatrices();
 	this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::setFovX(const float fovX)
+void Tet::Camera::setFovX(const float fovX)
 {
 	this->_properties._fovX = fovX;
 	this->_properties._fovY = this->_properties.computeFovY();
 	this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::setFovY(const float fovY)
+void Tet::Camera::setFovY(const float fovY)
 {
 	this->_properties._fovY = fovY;
 	this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::setLookAt(const vec3& position)
+void Tet::Camera::setLookAt(const vec3& position)
 {
 	this->_properties._lookAt = position;
 	this->_properties.computeAxes(this->_properties._n, this->_properties._u, this->_properties._v);
 	this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::setPosition(const vec3& position)
+void Tet::Camera::setPosition(const vec3& position)
 {
 	this->_properties._eye = position;
 	this->_properties.computeAxes(this->_properties._n, this->_properties._u, this->_properties._v);
 	this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::setRaspect(const uint16_t width, const uint16_t height)
+void Tet::Camera::setRaspect(const uint16_t width, const uint16_t height)
 {
 	this->_properties._width = width;
 	this->_properties._height = height;
@@ -113,25 +113,25 @@ void AlgGeom::Camera::setRaspect(const uint16_t width, const uint16_t height)
 	this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::setUp(const vec3& up)
+void Tet::Camera::setUp(const vec3& up)
 {
 	this->_properties._up = up;
 	this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::setZFar(const float zfar)
+void Tet::Camera::setZFar(const float zfar)
 {
 	this->_properties._zFar = zfar;
 	this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::setZNear(const float znear)
+void Tet::Camera::setZNear(const float znear)
 {
 	this->_properties._zNear = znear;
 	this->_properties.computeProjectionMatrices(&this->_properties);
 }
 
-void AlgGeom::Camera::updateMatrices()
+void Tet::Camera::updateMatrices()
 {
 	this->_properties.computeViewMatrix();
 	this->_properties.computeProjectionMatrices(&_properties);
@@ -139,7 +139,7 @@ void AlgGeom::Camera::updateMatrices()
 
 // [Movements] 
 
-void AlgGeom::Camera::boom(float speed)
+void Tet::Camera::boom(float speed)
 {
 	const glm::mat4 translationMatrix = glm::translate(mat4(1.0f), this->_properties._v * speed);			// Translation in y axis
 
@@ -149,12 +149,12 @@ void AlgGeom::Camera::boom(float speed)
 	this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::crane(float speed)
+void Tet::Camera::crane(float speed)
 {
 	boom(-speed);					// Implemented as another method to take advantage of nomenclature
 }
 
-void AlgGeom::Camera::dolly(float speed)
+void Tet::Camera::dolly(float speed)
 {
 	if (this->_properties._2d) return;
 
@@ -165,7 +165,7 @@ void AlgGeom::Camera::dolly(float speed)
 	this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::orbitXZ(float speed)
+void Tet::Camera::orbitXZ(float speed)
 {
 	if (this->_properties._2d) return;
 
@@ -180,7 +180,7 @@ void AlgGeom::Camera::orbitXZ(float speed)
 	this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::orbitY(float speed)
+void Tet::Camera::orbitY(float speed)
 {
 	if (this->_properties._2d) return;
 
@@ -195,7 +195,7 @@ void AlgGeom::Camera::orbitY(float speed)
 	this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::pan(float speed)
+void Tet::Camera::pan(float speed)
 {
 	if (this->_properties._2d) return;
 
@@ -211,7 +211,7 @@ void AlgGeom::Camera::pan(float speed)
 	this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::tilt(float speed)
+void Tet::Camera::tilt(float speed)
 {
 	if (this->_properties._2d) return;
 
@@ -233,7 +233,7 @@ void AlgGeom::Camera::tilt(float speed)
 	this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::truck(float speed)
+void Tet::Camera::truck(float speed)
 {
 	const mat4 translationMatrix = glm::translate(mat4(1.0f), this->_properties._u * speed);				// Translation in x axis
 
@@ -243,21 +243,21 @@ void AlgGeom::Camera::truck(float speed)
 	this->_properties.computeViewMatrices();
 }
 
-void AlgGeom::Camera::zoom(float speed)
+void Tet::Camera::zoom(float speed)
 {
 	this->_properties.zoom(speed);
 }
 
 /// [Private methods]
 
-void AlgGeom::Camera::copyCameraAttributes(const AlgGeom::Camera* camera)
+void Tet::Camera::copyCameraAttributes(const Tet::Camera* camera)
 {
 	this->_properties = camera->_properties;
 
 	if (camera->_backupCamera)
 	{
 		Camera* backupCamera = this->_backupCamera;
-		this->_backupCamera = new AlgGeom::Camera(*camera->_backupCamera);
+		this->_backupCamera = new Tet::Camera(*camera->_backupCamera);
 
 		delete backupCamera;
 	}

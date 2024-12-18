@@ -3,7 +3,7 @@
 
 /// [Public methods]
 
-AlgGeom::FBOScreenshot::FBOScreenshot(const uint16_t width, const uint16_t height) :
+Tet::FBOScreenshot::FBOScreenshot(const uint16_t width, const uint16_t height) :
 	FBO(width, height)
 {
 	glGenFramebuffers(1, &_id);									// Support for multisampled framebuffer
@@ -48,19 +48,19 @@ AlgGeom::FBOScreenshot::FBOScreenshot(const uint16_t width, const uint16_t heigh
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);				// Default framebuffer
 }
 
-AlgGeom::FBOScreenshot::~FBOScreenshot()
+Tet::FBOScreenshot::~FBOScreenshot()
 {
 	glDeleteTextures(1, &_colorBufferID);
 	glDeleteRenderbuffers(1, &_mColorBufferID);
 	glDeleteRenderbuffers(1, &_mDepthBufferID);
 }
 
-void AlgGeom::FBOScreenshot::bindFBO()
+void Tet::FBOScreenshot::bindFBO()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _multisampledFBO);			// Multisampled! Normal FBO is only used as support for this one
 }
 
-AlgGeom::Image* AlgGeom::FBOScreenshot::getImage() const
+Tet::Image* Tet::FBOScreenshot::getImage() const
 {
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, _multisampledFBO);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _id);
@@ -78,7 +78,7 @@ AlgGeom::Image* AlgGeom::FBOScreenshot::getImage() const
 	return image;
 }
 
-void AlgGeom::FBOScreenshot::modifySize(const uint16_t width, const uint16_t height)
+void Tet::FBOScreenshot::modifySize(const uint16_t width, const uint16_t height)
 {
 	FBO::modifySize(width, height);
 
@@ -100,7 +100,7 @@ void AlgGeom::FBOScreenshot::modifySize(const uint16_t width, const uint16_t hei
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void AlgGeom::FBOScreenshot::saveImage(const std::string& filename)
+void Tet::FBOScreenshot::saveImage(const std::string& filename)
 {
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, _multisampledFBO);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _id);

@@ -3,7 +3,7 @@
 
 // Public methods
 
-AlgGeom::DrawSegment::DrawSegment (SegmentLine &segment): Model3D(), _segment(segment)
+Tet::DrawSegment::DrawSegment (SegmentLine &segment): Model3D(), _segment(segment)
 {
     Component* component = new Component;
     component->_vertices.insert(component->_vertices.end(), {
@@ -16,4 +16,6 @@ AlgGeom::DrawSegment::DrawSegment (SegmentLine &segment): Model3D(), _segment(se
 
     component->completeTopology();
     this->buildVao(component);
+
+    this->updateAABB();
 }

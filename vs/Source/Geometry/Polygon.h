@@ -76,7 +76,7 @@ public:
 	/**
 	*	@brief Returns the number of vertices of the Polygon.
 	*/
-	size_t getNumVertices() { return _vertices.size(); }
+	size_t getNumVertices() const { return _vertices.size(); }
 
 	/**
 	*	@brief Returns the vertex at an index.

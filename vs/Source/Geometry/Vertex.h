@@ -55,12 +55,12 @@ public:
 	/**
 	*	@brief Returns the point value.
 	*/
-	Point getPoint() { return Point(_x, _y); }
+	Point getPoint() const { return Point(_x, _y); }
 
 	/**
 	*	@brief Returns the polygon associated to this vertex.
 	*/
-	Polygon* getPolygon() { return _polygon; }
+	Polygon* getPolygon() const { return _polygon; }
 
 	/**
 	*	@brief Returns the position of the current vertex in the polygon, if any.

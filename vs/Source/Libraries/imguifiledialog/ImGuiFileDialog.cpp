@@ -1829,13 +1829,13 @@ namespace IGFD
 		return false;
 	}
 
-	bool IGFD::FileManager::IsComposerEmpty()
-	{
+	bool IGFD::FileManager::IsComposerEmpty() const
+    {
 		return prCurrentPathDecomposition.empty();
 	}
 	
-	size_t IGFD::FileManager::GetComposerSize()
-	{
+	size_t IGFD::FileManager::GetComposerSize() const
+    {
 		return prCurrentPathDecomposition.size();
 	}
 

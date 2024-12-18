@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "TextureList.h"
 
-AlgGeom::TextureList::TextureList()
+Tet::TextureList::TextureList()
 {
 }
 
-AlgGeom::TextureList::~TextureList()
+Tet::TextureList::~TextureList()
 {
     for (auto& pair : _colorTexture)
     {
@@ -18,14 +18,14 @@ AlgGeom::TextureList::~TextureList()
     }
 }
 
-AlgGeom::Texture* AlgGeom::TextureList::getTexture(const vec4& color)
+Tet::Texture* Tet::TextureList::getTexture(const vec4& color)
 {
-    AlgGeom::Texture* texture = nullptr;
+    Tet::Texture* texture = nullptr;
     auto it = _colorTexture.find(color);
 
     if (it == _colorTexture.end())
     {
-        texture = new AlgGeom::Texture(color);
+        texture = new Tet::Texture(color);
         _colorTexture[color] = texture;
     }
     else
@@ -34,16 +34,16 @@ AlgGeom::Texture* AlgGeom::TextureList::getTexture(const vec4& color)
     return texture;
 }
 
-AlgGeom::Texture* AlgGeom::TextureList::getTexture(const std::string& path)
+Tet::Texture* Tet::TextureList::getTexture(const std::string& path)
 {
-    AlgGeom::Texture* texture = nullptr;
+    Tet::Texture* texture = nullptr;
     auto it = _imageTexture.find(path);
 
     if (it == _imageTexture.end())
     {
         try
         {
-            texture = new AlgGeom::Texture(new Image(path));
+            texture = new Tet::Texture(new Image(path));
             _imageTexture[path] = texture;
         }
         catch (std::runtime_error& error)
@@ -59,12 +59,12 @@ AlgGeom::Texture* AlgGeom::TextureList::getTexture(const std::string& path)
     return texture;
 }
 
-void AlgGeom::TextureList::saveTexture(const vec4& color, AlgGeom::Texture* texture)
+void Tet::TextureList::saveTexture(const vec4& color, Tet::Texture* texture)
 {
     _colorTexture[color] = texture;
 }
 
-void AlgGeom::TextureList::saveTexture(const std::string& path, AlgGeom::Texture* texture)
+void Tet::TextureList::saveTexture(const std::string& path, Tet::Texture* texture)
 {
     _imageTexture[path] = texture;
 }

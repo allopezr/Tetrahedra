@@ -6,7 +6,7 @@
 #include "Camera.h"
 #include "Model3D.h"
 
-namespace AlgGeom
+namespace Tet
 {
 	class SceneContent
 	{
@@ -18,9 +18,9 @@ namespace AlgGeom
 		SceneContent();
 		virtual ~SceneContent();
 
-		void addNewCamera(ApplicationState* appState);
+		void addNewCamera(const ApplicationState* appState);
 		void addNewModel(Model3D* model);
 		void buildScenario();
-		Model3D* getModel(Model3D::Component* component);
+		Model3D* getModel(const Model3D::Component* component) const;
 	};
 }

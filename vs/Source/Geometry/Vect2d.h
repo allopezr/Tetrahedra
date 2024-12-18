@@ -18,12 +18,12 @@ public:
 	/**
 	*	@return X coordinate.
 	*/
-    double getX() {return _x; }
+    double getX() const {return _x; }
 
 	/**
 	*	@return Y coordinate.
 	*/
-    double getY() {return _y; }
+    double getY() const {return _y; }
     
     /**
 	*	@brief Copy constructor.
@@ -53,12 +53,12 @@ public:
 	/**
 	*	@brief Returns this + b (sum of vectors).
 	*/
-	Vect2d operator+(const Vect2d& b);
+	Vect2d operator+(const Vect2d& b) const;
 
 	/**
 	*	@brief Returns a - b (substraction of vectors).
 	*/
-	Vect2d operator-(const Vect2d& b);
+	Vect2d operator-(const Vect2d& b) const;
 
 	/**
 	*	@brief Returns t . a (vector product by a scalar).

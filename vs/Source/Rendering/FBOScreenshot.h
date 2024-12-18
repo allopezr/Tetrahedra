@@ -3,7 +3,7 @@
 #include "FBO.h"
 #include "Image.h"
 
-namespace AlgGeom
+namespace Tet
 {
 	class FBOScreenshot : public FBO
 	{
@@ -16,7 +16,7 @@ namespace AlgGeom
 		virtual ~FBOScreenshot();
 
 		virtual GLuint getId() const { return _multisampledFBO; }
-		AlgGeom::Image* getImage() const;
+		Tet::Image* getImage() const;
 
 		virtual void bindFBO();
 		virtual void modifySize(const uint16_t width, const uint16_t height);

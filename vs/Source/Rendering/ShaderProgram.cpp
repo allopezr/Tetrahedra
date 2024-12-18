@@ -3,23 +3,23 @@
 
 // Static variables initialization
 
-const std::string AlgGeom::ShaderProgram::MODULE_HEADER = "#include";
-const std::string AlgGeom::ShaderProgram::MODULE_FILE_CHAR_1 = "<";
-const std::string AlgGeom::ShaderProgram::MODULE_FILE_CHAR_2 = ">";
-std::unordered_map<std::string, std::string> AlgGeom::ShaderProgram::_moduleCode;
+const std::string Tet::ShaderProgram::MODULE_HEADER = "#include";
+const std::string Tet::ShaderProgram::MODULE_FILE_CHAR_1 = "<";
+const std::string Tet::ShaderProgram::MODULE_FILE_CHAR_2 = ">";
+std::unordered_map<std::string, std::string> Tet::ShaderProgram::_moduleCode;
 
 // Public methods
 
-AlgGeom::ShaderProgram::ShaderProgram()
+Tet::ShaderProgram::ShaderProgram()
 	: _handler(0), _linked(false), _logString("")
 {
 }
 
-AlgGeom::ShaderProgram::~ShaderProgram()
+Tet::ShaderProgram::~ShaderProgram()
 {
 }
 
-bool AlgGeom::ShaderProgram::setSubroutineUniform(const GLenum shaderType, const std::string& subroutine, const std::string& functionName)
+bool Tet::ShaderProgram::setSubroutineUniform(const GLenum shaderType, const std::string& subroutine, const std::string& functionName)
 {
 	GLint subroutineID = glGetSubroutineUniformLocation(_handler, shaderType, subroutine.c_str());
 	GLint uniformID = glGetSubroutineIndex(_handler, shaderType, functionName.c_str());
@@ -35,7 +35,7 @@ bool AlgGeom::ShaderProgram::setSubroutineUniform(const GLenum shaderType, const
 	return false;
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, GLfloat value)
+bool Tet::ShaderProgram::setUniform(const std::string& name, GLfloat value)
 {
 	GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -48,7 +48,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, GLfloat value)
 	return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, GLint value)
+bool Tet::ShaderProgram::setUniform(const std::string& name, GLint value)
 {
 	GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -61,7 +61,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, GLint value)
 	return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const GLuint value)
+bool Tet::ShaderProgram::setUniform(const std::string& name, const GLuint value)
 {
 	GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -74,7 +74,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const GLuint va
 	return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const mat4& value)
+bool Tet::ShaderProgram::setUniform(const std::string& name, const mat4& value)
 {
 	GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -87,7 +87,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const mat4& val
 	return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const std::vector<mat4>& values)
+bool Tet::ShaderProgram::setUniform(const std::string& name, const std::vector<mat4>& values)
 {
 	GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -100,7 +100,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const std::vect
 	return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const vec2& value)
+bool Tet::ShaderProgram::setUniform(const std::string& name, const vec2& value)
 {
 	GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -113,7 +113,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const vec2& val
 	return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const uvec2& value)
+bool Tet::ShaderProgram::setUniform(const std::string& name, const uvec2& value)
 {
 	GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -126,7 +126,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const uvec2& va
 	return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const vec3& value)
+bool Tet::ShaderProgram::setUniform(const std::string& name, const vec3& value)
 {
 	GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -139,7 +139,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const vec3& val
 	return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const vec4& value)
+bool Tet::ShaderProgram::setUniform(const std::string& name, const vec4& value)
 {
 	GLint location = glGetUniformLocation(_handler, name.c_str());
 
@@ -152,7 +152,7 @@ bool AlgGeom::ShaderProgram::setUniform(const std::string& name, const vec4& val
 	return this->showErrorMessage(name);
 }
 
-bool AlgGeom::ShaderProgram::use()
+bool Tet::ShaderProgram::use() const
 {
 	if ((_handler > 0) && (_linked))			// Is the program created and linked?
 	{
@@ -165,7 +165,7 @@ bool AlgGeom::ShaderProgram::use()
 
 /// [Protected methods]
 
-GLuint AlgGeom::ShaderProgram::compileShader(const char* filename, const GLenum shaderType)
+GLuint Tet::ShaderProgram::compileShader(const char* filename, const GLenum shaderType)
 {
 	if (!fileExists(filename))
 	{
@@ -196,7 +196,7 @@ GLuint AlgGeom::ShaderProgram::compileShader(const char* filename, const GLenum 
 	}
 
 	const char* shaderSourceCString = shaderSourceString.c_str();							// Compile shader code
-	glShaderSource(shaderHandler, 1, &shaderSourceCString, NULL);
+	glShaderSource(shaderHandler, 1, &shaderSourceCString, nullptr);
 	glCompileShader(shaderHandler);
 
 	GLint compileResult;
@@ -224,13 +224,13 @@ GLuint AlgGeom::ShaderProgram::compileShader(const char* filename, const GLenum 
 	return shaderHandler;
 }
 
-bool AlgGeom::ShaderProgram::fileExists(const std::string& fileName)
+bool Tet::ShaderProgram::fileExists(const std::string& fileName)
 {
 	std::ifstream f(fileName.c_str());
 	return f.good();
 }
 
-AlgGeom::ShaderProgram::ShaderTypes AlgGeom::ShaderProgram::fromOpenGLToShaderTypes(const GLenum shaderType)
+Tet::ShaderProgram::ShaderTypes Tet::ShaderProgram::fromOpenGLToShaderTypes(const GLenum shaderType)
 {
 	switch (shaderType)
 	{
@@ -243,7 +243,7 @@ AlgGeom::ShaderProgram::ShaderTypes AlgGeom::ShaderProgram::fromOpenGLToShaderTy
 	return VERTEX_SHADER;
 }
 
-bool AlgGeom::ShaderProgram::includeLibraries(std::string& shaderContent)
+bool Tet::ShaderProgram::includeLibraries(std::string& shaderContent)
 {
 	size_t pos = shaderContent.find(MODULE_HEADER);
 
@@ -287,7 +287,7 @@ bool AlgGeom::ShaderProgram::includeLibraries(std::string& shaderContent)
 	return true;
 }
 
-bool AlgGeom::ShaderProgram::loadFileContent(const std::string& filename, std::string& content)
+bool Tet::ShaderProgram::loadFileContent(const std::string& filename, std::string& content)
 {
 	std::ifstream shaderSourceFile;
 	shaderSourceFile.open(filename);
@@ -305,7 +305,7 @@ bool AlgGeom::ShaderProgram::loadFileContent(const std::string& filename, std::s
 	return true;
 }
 
-bool AlgGeom::ShaderProgram::showErrorMessage(const std::string& variableName)
+bool Tet::ShaderProgram::showErrorMessage(const std::string& variableName)
 {
 	std::cerr << "Could not find shader slot for " << variableName << "!" << std::endl;
 	return false;

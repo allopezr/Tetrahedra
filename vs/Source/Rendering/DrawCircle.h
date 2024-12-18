@@ -4,7 +4,7 @@
 #include "Model3D.h"
 
 
-namespace AlgGeom
+namespace Tet
 {
 	class DrawCircle: public Model3D
 	{
@@ -13,7 +13,7 @@ namespace AlgGeom
 		uint32_t	_numSubdivisions;
 
 	public:
-		DrawCircle(Circle& circle, uint32_t numSubdivisions = 256);
+		DrawCircle(const Circle& circle, uint32_t numSubdivisions = 256);
 		DrawCircle(const DrawCircle& ddt) = delete;
 		virtual ~DrawCircle() {};
 	};

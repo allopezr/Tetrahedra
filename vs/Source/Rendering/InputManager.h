@@ -3,7 +3,7 @@
 #include "ApplicationState.h"
 #include "Singleton.h"
 
-namespace AlgGeom
+namespace Tet
 {
 	class ResizeListener
 	{

@@ -56,7 +56,7 @@ double Point::getAlpha()
 	return 0; 
 }
 
-double Point::getModule()
+double Point::getModule() const
 {
 	return std::sqrt(std::pow(_x, 2) + std::pow(_y, 2));
 }

@@ -1266,8 +1266,8 @@ namespace IGFD
 		
 	public:
 		FileManager();
-		bool IsComposerEmpty();
-		size_t GetComposerSize();
+		bool IsComposerEmpty() const;
+		size_t GetComposerSize() const;
 		bool IsFileListEmpty();
 		bool IsPathListEmpty();
 		bool IsFilteredListEmpty();

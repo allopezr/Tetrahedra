@@ -10,7 +10,7 @@
 #include "SegmentLine.h"
 #include "Model3D.h"
 
-namespace AlgGeom
+namespace Tet
 {
     class DrawSegment : public Model3D {
     protected:

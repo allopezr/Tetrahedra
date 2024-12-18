@@ -3,7 +3,7 @@
 
 // Public methods
 
-AlgGeom::DrawLine::DrawLine (Line &line): Model3D(), _line(line)
+Tet::DrawLine::DrawLine (const Line &line): Model3D(), _line(line)
 {
     //
 }

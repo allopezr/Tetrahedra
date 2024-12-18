@@ -2,7 +2,7 @@
 
 #include "Image.h"
 
-namespace AlgGeom
+namespace Tet
 {
 	class FBO
 	{

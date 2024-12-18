@@ -3,14 +3,26 @@
 #include "Renderer.h"
 #include "Window.h"
 
+#include <windows.h>						// DWORD is undefined otherwise
+
+// Laptop support. Use NVIDIA graphic card instead of Intel
+extern "C" {
+    _declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+}
+
+static void glfw_error_callback(int error, const char* description)
+{
+    fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+}
+
 int main()
 {
-    AlgGeom::Window* window = AlgGeom::Window::getInstance();
-    AlgGeom::Renderer* renderer = AlgGeom::Renderer::getInstance();
+    Tet::Window* window = Tet::Window::getInstance();
+    Tet::Renderer* renderer = Tet::Renderer::getInstance();
 
     try
     {
-        window->init("Algoritmos Geometricos");
+        window->init("Tetrahedral meshing");
         window->loop();
     }
     catch (const std::exception& exception)

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace AlgGeom
+namespace Tet
 {
 	class ShaderProgram
 	{
@@ -53,7 +53,7 @@ namespace AlgGeom
 		bool setUniform(const std::string& name, const vec3& value);
 		bool setUniform(const std::string& name, const vec4& value);
 
-		bool use();
+		bool use() const;
 	};
 }
 

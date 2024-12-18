@@ -1,6 +1,6 @@
 #pragma once
 
-namespace AlgGeom
+namespace Tet
 {
 	class InterfaceAdapter
 	{

@@ -2,7 +2,7 @@
 
 #include "ShaderProgram.h"
 
-namespace AlgGeom
+namespace Tet
 {
 	class RenderingShader: public ShaderProgram
 	{

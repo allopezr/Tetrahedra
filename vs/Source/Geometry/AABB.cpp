@@ -23,7 +23,7 @@ AABB& AABB::operator=(const AABB& aabb)
 	return *this;
 }
 
-AABB AABB::dot(const mat4& matrix)
+AABB AABB::dot(const mat4& matrix) const
 {
 	return AABB(matrix * vec4(_min, 1.0f), matrix * vec4(_max, 1.0f));
 }

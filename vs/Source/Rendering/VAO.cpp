@@ -3,7 +3,7 @@
 
 // Public methods
 
-AlgGeom::VAO::VAO(bool interleaved)
+Tet::VAO::VAO(bool interleaved)
 {
 	glGenVertexArrays(1, &_vao);
 	glBindVertexArray(_vao);
@@ -29,28 +29,28 @@ AlgGeom::VAO::VAO(bool interleaved)
 	glGenBuffers(static_cast<GLsizei>(_ibos.size()), _ibos.data());
 }
 
-AlgGeom::VAO::~VAO()
+Tet::VAO::~VAO()
 {
 	glDeleteBuffers(static_cast<GLsizei>(_vbos.size()), _vbos.data());
 	glDeleteBuffers(static_cast<GLsizei>(_ibos.size()), _ibos.data());
 	glDeleteVertexArrays(1, &_vao);
 }
 
-void AlgGeom::VAO::drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices)
+void Tet::VAO::drawObject(IBO_slots ibo, GLuint openGLPrimitive, GLuint numIndices) const
 {
 	glBindVertexArray(_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibos[ibo]);
 	glDrawElements(openGLPrimitive, numIndices, GL_UNSIGNED_INT, nullptr);
 }
 
-void AlgGeom::VAO::setVBOData(const std::vector<Vertex>& vertices, GLuint changeFrequency)
+void Tet::VAO::setVBOData(const std::vector<Vertex>& vertices, GLuint changeFrequency) const
 {
 	glBindVertexArray(_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, _vbos[0]);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(VAO::Vertex), vertices.data(), changeFrequency);
 }
 
-void AlgGeom::VAO::setIBOData(IBO_slots ibo, const std::vector<GLuint>& indices, GLuint changeFrequency)
+void Tet::VAO::setIBOData(IBO_slots ibo, const std::vector<GLuint>& indices, GLuint changeFrequency)
 {
 	glBindVertexArray(_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibos[ibo]);
@@ -59,7 +59,7 @@ void AlgGeom::VAO::setIBOData(IBO_slots ibo, const std::vector<GLuint>& indices,
 
 // Private methods
 
-void AlgGeom::VAO::defineNonInterleaveVBO(GLuint vboId, size_t structSize, GLuint elementType, uint8_t slot)
+void Tet::VAO::defineNonInterleaveVBO(GLuint vboId, size_t structSize, GLuint elementType, uint8_t slot)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
 	glBufferData(GL_ARRAY_BUFFER, structSize, nullptr, GL_STATIC_DRAW);
@@ -67,7 +67,7 @@ void AlgGeom::VAO::defineNonInterleaveVBO(GLuint vboId, size_t structSize, GLuin
 	glEnableVertexAttribArray(slot);
 }
 
-void AlgGeom::VAO::defineInterleavedVBO(GLuint vboId)
+void Tet::VAO::defineInterleavedVBO(GLuint vboId)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
 	GLsizei structSize = sizeof(Vertex);

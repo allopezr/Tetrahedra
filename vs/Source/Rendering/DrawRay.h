@@ -10,7 +10,7 @@
 #include "RayLine.h"
 #include "Model3D.h"
 
-namespace AlgGeom
+namespace Tet
 {
     class DrawRay : public Model3D 
     {
@@ -18,7 +18,7 @@ namespace AlgGeom
         RayLine _ray;
 
     public:
-        DrawRay(RayLine& t);
+        DrawRay(const RayLine& t);
         DrawRay(const DrawRay& drawRay) = delete;
         virtual ~DrawRay() {};
     };

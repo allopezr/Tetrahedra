@@ -1,6 +1,6 @@
 #pragma once
 
-namespace AlgGeom
+namespace Tet
 {
 	class CameraProjection
 	{
@@ -28,8 +28,8 @@ namespace AlgGeom
 			vec3							_n, _u, _v;
 			mat4							_viewMatrix, _projectionMatrix, _viewProjectionMatrix;
 
-			float	computeAspect();
-			void	computeAxes(vec3& n, vec3& u, vec3& v);
+			float	computeAspect() const;
+			void	computeAxes(vec3& n, vec3& u, vec3& v) const;
 			vec2	computeBottomLeftCorner();
 			float	computeFovY();
 

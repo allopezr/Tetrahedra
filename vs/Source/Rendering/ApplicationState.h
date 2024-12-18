@@ -5,7 +5,7 @@
 #include "VAO.h"
 
 
-namespace AlgGeom
+namespace Tet
 {
 	struct ApplicationState
 	{

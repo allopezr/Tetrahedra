@@ -1,22 +1,22 @@
 #include "stdafx.h"
 #include "RenderingShader.h"
 
-AlgGeom::RenderingShader::RenderingShader(): ShaderProgram()
+Tet::RenderingShader::RenderingShader(): ShaderProgram()
 {
 }
 
-AlgGeom::RenderingShader::~RenderingShader()
+Tet::RenderingShader::~RenderingShader()
 {
 }
 
-void AlgGeom::RenderingShader::applyActiveSubroutines()
+void Tet::RenderingShader::applyActiveSubroutines()
 {
 	glUniformSubroutinesuiv(GL_VERTEX_SHADER, static_cast<uint32_t>(_activeSubroutineUniform[VERTEX_SHADER].size()), _activeSubroutineUniform[VERTEX_SHADER].data());
 	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, static_cast<uint32_t>(_activeSubroutineUniform[FRAGMENT_SHADER].size()), _activeSubroutineUniform[FRAGMENT_SHADER].data());
 	glUniformSubroutinesuiv(GL_GEOMETRY_SHADER, static_cast<uint32_t>(_activeSubroutineUniform[GEOMETRY_SHADER].size()), _activeSubroutineUniform[GEOMETRY_SHADER].data());
 }
 
-GLuint AlgGeom::RenderingShader::createShaderProgram(const char* filename)
+GLuint Tet::RenderingShader::createShaderProgram(const char* filename)
 {
 	if (_handler <= 0) {										// Shader identifier
 		_handler = glCreateProgram();

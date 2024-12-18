@@ -10,7 +10,7 @@
 #include "Point.h"
 #include "Model3D.h"
 
-namespace AlgGeom
+namespace Tet
 {
     class DrawPoint : public Model3D 
     {
@@ -18,7 +18,7 @@ namespace AlgGeom
         Point _point;
 
     public:
-        DrawPoint(Point& p);
+        DrawPoint(const Point& p);
         DrawPoint(const DrawPoint& drawPoint) = delete;
         virtual ~DrawPoint() {};
     };

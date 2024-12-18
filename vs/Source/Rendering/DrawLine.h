@@ -10,7 +10,7 @@
 #include "Line.h"
 #include "Model3D.h"
 
-namespace AlgGeom
+namespace Tet
 {
     class DrawLine : public Model3D 
     {
@@ -18,7 +18,7 @@ namespace AlgGeom
         Line _line;
 
     public:
-        DrawLine(Line& t);
+        DrawLine(const Line& t);
         DrawLine(const DrawLine& drawLine) = delete;
         virtual ~DrawLine() {};
     };

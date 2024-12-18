@@ -3,15 +3,14 @@
 
 // Public methods
 
-AlgGeom::DrawMesh::DrawMesh(): Model3D()
+Tet::DrawMesh::DrawMesh(): Model3D()
 {
 }
 
-AlgGeom::DrawMesh::~DrawMesh()
-{
-}
+Tet::DrawMesh::~DrawMesh()
+= default;
 
-AlgGeom::DrawMesh* AlgGeom::DrawMesh::loadModelOBJ(const std::string& path)
+Tet::DrawMesh* Tet::DrawMesh::loadModelOBJ(const std::string& path)
 {
     std::string binaryFile = path.substr(0, path.find_last_of('.')) + BINARY_EXTENSION;
 
@@ -25,11 +24,11 @@ AlgGeom::DrawMesh* AlgGeom::DrawMesh::loadModelOBJ(const std::string& path)
 
         if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
         {
-            std::cout << "ERROR::ASSIMP::" << _assimpImporter.GetErrorString() << std::endl;
+            std::cout << "ERROR::ASSIMP::" << _assimpImporter.GetErrorString() << '\n';
             return this;
         }
 
-        std::string shortName = scene->GetShortFilename(path.c_str());
+        std::string shortName = aiScene::GetShortFilename(path.c_str());
         std::string folder = path.substr(0, path.length() - shortName.length());
 
         this->processNode(scene->mRootNode, scene, folder);
@@ -38,7 +37,7 @@ AlgGeom::DrawMesh* AlgGeom::DrawMesh::loadModelOBJ(const std::string& path)
 
     for (auto& component : _components)
     {
-        this->buildVao(component.get());
+        Tet::DrawMesh::buildVao(component.get());
     }
 
     return this;
@@ -46,10 +45,10 @@ AlgGeom::DrawMesh* AlgGeom::DrawMesh::loadModelOBJ(const std::string& path)
 
 // Protected methods
 
-AlgGeom::Model3D::Component* AlgGeom::DrawMesh::processMesh(aiMesh* mesh, const aiScene* scene, const std::string& folder)
+Tet::Model3D::Component* Tet::DrawMesh::processMesh(const aiMesh* mesh, const aiScene* scene, const std::string& folder)
 {
     std::vector<VAO::Vertex> vertices(mesh->mNumVertices);
-    std::vector<GLuint> indices(mesh->mNumFaces * 4);
+    std::vector<GLuint> indices(mesh->mNumFaces * 3);
     AABB aabb;
 
     // Vertices
@@ -71,21 +70,19 @@ AlgGeom::Model3D::Component* AlgGeom::DrawMesh::processMesh(aiMesh* mesh, const 
     {
         aiFace face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; j++)
-            indices[i * 4 + j] = face.mIndices[j];
-
-        indices[i * 4 + 3] = RESTART_PRIMITIVE_INDEX;
+            indices[i * 3 + j] = face.mIndices[j];
     }
 
     Component* component = new Component;
     component->_vertices = std::move(vertices);
     component->_indices[VAO::IBO_TRIANGLE] = std::move(indices);
-    component->_aabb = std::move(aabb);
+    component->_aabb = aabb;
     component->completeTopology();
 
     return component;
 }
 
-void AlgGeom::DrawMesh::processNode(aiNode* node, const aiScene* scene, const std::string& folder)
+void Tet::DrawMesh::processNode(const aiNode* node, const aiScene* scene, const std::string& folder)
 {
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {

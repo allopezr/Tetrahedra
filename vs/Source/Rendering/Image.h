@@ -1,6 +1,6 @@
 #pragma once
 
-namespace AlgGeom
+namespace Tet
 {
 	class Image
 	{
@@ -16,7 +16,7 @@ namespace AlgGeom
 
 		void flipImageVertically();
 		static void flipImageVertically(std::vector<unsigned char>& image, const uint16_t width, const uint16_t height, const uint8_t depth);
-		bool saveImage(const std::string& filename);
+		bool saveImage(const std::string& filename) const;
 
 		unsigned char* bits() { return _image.data(); }
 		int getDepth() const { return _depth; }

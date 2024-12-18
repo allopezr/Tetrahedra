@@ -3,7 +3,7 @@
 
 // Public methods
 
-Triangle::Triangle(Vect2d &aa, Vect2d &bb, Vect2d &cc): _a(aa), _b(bb), _c(cc)
+Triangle::Triangle(const Vect2d &aa, const Vect2d &bb, const Vect2d &cc): _a(aa), _b(bb), _c(cc)
 {
 }
 

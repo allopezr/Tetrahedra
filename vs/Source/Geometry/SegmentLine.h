@@ -140,7 +140,7 @@ public:
 	/**
 	*	@brief Modifies the origin of the segment.
 	*/
-	void setA(Point& p) { _orig = p; }
+	void setA(const Point& p) { _orig = p; }
 
 	/**
 	*	@brief Returns the slope of the implied straight line equation: m = (yb-ya) / (xb-xa).

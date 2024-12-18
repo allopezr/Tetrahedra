@@ -19,14 +19,8 @@
     <Filter Include="Archivos de encabezado\Fonts">
       <UniqueIdentifier>{a991302b-7626-404e-8a10-9409f496bd06}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de encabezado\imgui">
-      <UniqueIdentifier>{ca96321d-40e7-42f2-97af-220e40778022}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Archivos de origen\Fonts">
       <UniqueIdentifier>{ab3e1ab9-e9e9-4499-b5ed-ded3ab06b442}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de origen\imgui">
-      <UniqueIdentifier>{b1a3ecc8-e00d-4182-8173-65a9be468ce3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Archivos de encabezado\RenderAG">
       <UniqueIdentifier>{6be754f1-9935-4434-b5b8-ce9160e71b3e}</UniqueIdentifier>
@@ -55,6 +49,18 @@
     <Filter Include="Archivos de origen\Precompiled">
       <UniqueIdentifier>{3be1434f-98eb-454c-b528-ec81f70b4566}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de origen\Libraries">
+      <UniqueIdentifier>{b1afe850-143b-4814-841b-2b08204cb040}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Libraries">
+      <UniqueIdentifier>{5c4294d6-d302-4c86-9881-a1db67b43a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Data structures">
+      <UniqueIdentifier>{72abe66e-4e4b-4a81-b2bc-f80e2f221e05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\DataStructures">
+      <UniqueIdentifier>{328502b2-4bce-408b-927b-cba9b3a3eee2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Fonts\lato.cpp">
@@ -65,42 +71,6 @@
     </ClCompile>
     <ClCompile Include="Fonts\font_awesome_2.cpp">
       <Filter>Archivos de origen\Fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imguifiledialog\ImGuiFileDialog.cpp">
-      <Filter>Archivos de origen\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\imgui.cpp">
-      <Filter>Archivos de origen\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\imgui_demo.cpp">
-      <Filter>Archivos de origen\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\imgui_draw.cpp">
-      <Filter>Archivos de origen\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\imgui_tables.cpp">
-      <Filter>Archivos de origen\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\imgui_widgets.cpp">
-      <Filter>Archivos de origen\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\examples\imgui_impl_glfw.cpp">
-      <Filter>Archivos de origen\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\examples\imgui_impl_opengl3.cpp">
-      <Filter>Archivos de origen\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgizmo\ImCurveEdit.cpp">
-      <Filter>Archivos de origen\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgizmo\ImGradient.cpp">
-      <Filter>Archivos de origen\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgizmo\ImGuizmo.cpp">
-      <Filter>Archivos de origen\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgizmo\ImSequencer.cpp">
-      <Filter>Archivos de origen\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Geometry\Circle.cpp">
       <Filter>Archivos de origen\Geometry</Filter>
@@ -225,6 +195,18 @@
     <ClCompile Include="Rendering\DrawCircle.cpp">
       <Filter>Archivos de origen\RenderAG</Filter>
     </ClCompile>
+    <ClCompile Include="Libraries\imguifiledialog\ImGuiFileDialog.cpp">
+      <Filter>Archivos de origen\Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\DrawAABB.cpp">
+      <Filter>Archivos de origen\RenderAG</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\DrawTetrahedron.cpp">
+      <Filter>Archivos de origen\RenderAG</Filter>
+    </ClCompile>
+    <ClCompile Include="DataStructures\BoundaryVolumeHierarchy.cpp">
+      <Filter>Archivos de origen\DataStructures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Fonts\lato.hpp">
@@ -235,42 +217,6 @@
     </ClInclude>
     <ClInclude Include="Fonts\font_awesome.hpp">
       <Filter>Archivos de encabezado\Fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imguifiledialog\ImGuiFileDialog.h">
-      <Filter>Archivos de encabezado\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imguifiledialog\ImGuiFileDialogConfig.h">
-      <Filter>Archivos de encabezado\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\imconfig.h">
-      <Filter>Archivos de encabezado\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\imgui.h">
-      <Filter>Archivos de encabezado\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\imgui_internal.h">
-      <Filter>Archivos de encabezado\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\examples\imgui_impl_glfw.h">
-      <Filter>Archivos de encabezado\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\imstb_truetype.h">
-      <Filter>Archivos de encabezado\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgizmo\ImCurveEdit.h">
-      <Filter>Archivos de encabezado\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgizmo\ImGradient.h">
-      <Filter>Archivos de encabezado\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgizmo\ImGuizmo.h">
-      <Filter>Archivos de encabezado\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgizmo\ImSequencer.h">
-      <Filter>Archivos de encabezado\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgizmo\ImZoomSlider.h">
-      <Filter>Archivos de encabezado\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Geometry\BasicGeometry.h">
       <Filter>Archivos de encabezado\Geometry</Filter>
@@ -418,6 +364,21 @@
     </ClInclude>
     <ClInclude Include="Rendering\DrawCircle.h">
       <Filter>Archivos de encabezado\RenderAG</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imguifiledialog\ImGuiFileDialog.h">
+      <Filter>Archivos de encabezado\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imguifiledialog\ImGuiFileDialogConfig.h">
+      <Filter>Archivos de encabezado\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\DrawAABB.h">
+      <Filter>Archivos de encabezado\RenderAG</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\DrawTetrahedron.h">
+      <Filter>Archivos de encabezado\RenderAG</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStructures\BoundaryVolumeHierarchy.h">
+      <Filter>Archivos de encabezado\Data structures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

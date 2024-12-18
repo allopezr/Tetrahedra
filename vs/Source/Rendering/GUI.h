@@ -6,7 +6,7 @@
 #include "SceneContent.h"
 #include "Singleton.h"
 
-namespace AlgGeom
+namespace Tet
 {
 	class GUI: public Singleton<GUI>
 	{
@@ -31,15 +31,15 @@ namespace AlgGeom
 		ImGuizmo::MODE										_currentGizmoMode;
 
 	protected:
-		void editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mode);
-		void loadFonts();
-		void loadImGUIStyle();
-		void processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent);
-		void renderGuizmo(Model3D::Component* component, SceneContent* sceneContent);
-		void showCameraMenu(SceneContent* sceneContent);
+        static void editTransform(ImGuizmo::OPERATION& operation, ImGuizmo::MODE& mode);
+        static void loadFonts();
+		void loadImGUIStyle() const;
+        static void processSelectedFile(FileDialog fileDialog, const std::string& filename, SceneContent* sceneContent);
+		void renderGuizmo(const Model3D::Component* component, SceneContent* sceneContent);
+		void showCameraMenu(const SceneContent* sceneContent) const;
 		void showFileDialog(SceneContent* sceneContent);
-		void showLightMenu(SceneContent* sceneContent);
-		void showModelMenu(SceneContent* sceneContent);
+		void showLightMenu(const SceneContent* sceneContent);
+		void showModelMenu(const SceneContent* sceneContent);
 		void showRenderingMenu(SceneContent* sceneContent);
 		void showScreenshotMenu(SceneContent* sceneContent);
 
@@ -49,7 +49,7 @@ namespace AlgGeom
 	public:
 		virtual ~GUI();
 
-		void initialize(GLFWwindow* window, const int openGLMinorVersion);
+		void initialize(GLFWwindow* window, const int openGLMinorVersion) const;
 		void render(SceneContent* sceneContent);
 
 		uint16_t getFrameRate() { return static_cast<uint16_t>(ImGui::GetIO().Framerate); }

@@ -3,7 +3,7 @@
 
 // Public methods
 
-AlgGeom::DrawPointCloud::DrawPointCloud (PointCloud &pointCloud): Model3D(), _pointCloud(pointCloud)
+Tet::DrawPointCloud::DrawPointCloud (PointCloud &pointCloud): Model3D(), _pointCloud(pointCloud)
 {
     // 
     size_t numPoints = _pointCloud.size();

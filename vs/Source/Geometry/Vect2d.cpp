@@ -28,13 +28,13 @@ Vect2d & Vect2d::operator=(const Vect2d & vector)
 	return *this;
 }
 
-Vect2d Vect2d::operator+(const Vect2d& b)
+Vect2d Vect2d::operator+(const Vect2d& b) const
 {
 	// XXXXX
 	return Vect2d();
 }
 
-Vect2d Vect2d::operator-(const Vect2d& b)
+Vect2d Vect2d::operator-(const Vect2d& b) const
 {
 	// XXXXX
 	return Vect2d();
